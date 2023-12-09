@@ -20,6 +20,14 @@ class RedisClient {
         const delAsync = promisify(this.store.del).bind(this.store);
         return delAsync(key);
       },
+      sismember: (key, val) => {
+        const sisAsync = promisify(this.store.sismember).bind(this.store);
+        return sisAsync(key, val);
+      },
+      sadd: (key, val) => {
+        const saddAsync = promisify(this.store.sadd).bind(this.store);
+        return saddAsync(key, val);
+      },
     };
   }
 
@@ -50,6 +58,19 @@ class RedisClient {
     } catch (err) {
       console.log(`redis del: ${err}`);
     }
+  }
+
+  async sismember(key, member) {
+    try {
+      await this.client.sismember(key, member);
+    } catch (err) {
+      console.log(`redis del: ${err}`);
+    }
+  }
+
+  async sadd(key, val) {
+    await this.client.sadd(key, JSON
+      .stringify(val));
   }
 }
 
