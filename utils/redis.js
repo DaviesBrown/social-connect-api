@@ -19,7 +19,8 @@ class RedisClient {
       del: (key) => {
         const delAsync = promisify(this.store.del).bind(this.store);
         return delAsync(key);
-      }
+      },
+    };
   }
 
   isAlive() {
