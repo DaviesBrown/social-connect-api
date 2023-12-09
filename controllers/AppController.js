@@ -1,5 +1,11 @@
+const dbClient = require("../db");
+
 const getStatus = (req, res) => {
     res.status(200).json({ status: 'Server is running' });
 };
 
-module.exports = { getStatus };
+const getStats = (req, res) => {
+    res.status(200).json({ db: dbClient.isAlive() });
+};
+
+module.exports = { getStatus, getStats };

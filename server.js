@@ -1,8 +1,11 @@
 const express = require('express');
 const routes = require('./routes');
+const dbClient = require('./db');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+dbClient.connectDB();
 
 app.use(express.json());
 app.use('/', routes);
