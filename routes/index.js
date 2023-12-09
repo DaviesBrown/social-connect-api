@@ -1,5 +1,7 @@
+/* eslint-disable jest/require-hook */
 const express = require('express');
 const appRoutes = require('./appRoutes');
+
 const router = express.Router();
 
 router.use('/', appRoutes);
