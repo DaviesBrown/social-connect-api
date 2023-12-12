@@ -33,8 +33,7 @@ const registerUser = async (req, res) => {
 const loginUser = async (req, res) => {
   // POST /login
   try {
-    const { email, password } = req.body;
-    console.log(email, password);
+    const { email, password, isAdmin } = req.body;
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(401).json({ error: 'Invalid user credentials' });
@@ -43,8 +42,10 @@ const loginUser = async (req, res) => {
     if (!passwordMatch) {
       return res.status(401).json({ error: 'Invalid password credentials' });
     }
-    const token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY, { expiresIn: '24h' });
-    return res.json({ token });
+    if (!req.user) {
+      const token = jwt.sign({ userId: user._id, isAdmin }, process.env.SECRET_KEY, { expiresIn: '24h' });
+      return res.json({ token });
+    }
   } catch (error) {
     res.status(500).json({ error: 'Login failed' });
   }
@@ -54,7 +55,6 @@ const logoutUser = async (req, res) => {
   // POST /logout
   try {
     const token = req.headers.authorization;
-    console.log(token);
     if (!token) {
       return res.status(401).json({ error: 'Unauthorized' });
     }

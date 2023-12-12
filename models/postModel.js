@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const commentSchema = mongoose.Schema({
+const commentSchema = new mongoose.Schema({
   text: {
     type: String,
     max: 100,
@@ -12,7 +12,7 @@ const commentSchema = mongoose.Schema({
   },
 }, { timestamps: true });
 
-const postSchema = mongoose.Schema({
+const postSchema = new mongoose.Schema({
   userId: {
     type: String,
     required: true,
@@ -30,6 +30,11 @@ const postSchema = mongoose.Schema({
   likes: {
     type: Array,
     default: [],
+  },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
   },
 }, { timestamps: true });
 

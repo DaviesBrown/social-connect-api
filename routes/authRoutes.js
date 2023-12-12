@@ -1,6 +1,7 @@
 /* eslint-disable jest/require-hook */
 const express = require('express');
 const authController = require('../controllers/AuthController');
+const authenticateToken = require('../utils/auth');
 
 const router = express.Router();
 
