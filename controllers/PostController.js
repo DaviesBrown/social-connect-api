@@ -36,7 +36,19 @@ const updatePost = async (req, res) => {
   }
 };
 
-const deletePost = async (req, res) => {};
+const deletePost = async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.id);
+    if (post.userId === req.user.userId) {
+      await post.deleteOne();
+      res.status(200).json({ message: 'The post has been deleted' });
+    } else {
+      res.status(403).json('you can delete only your post');
+    }
+  } catch (err) {
+    res.status(500).json({ error: 'This post has been deleted'});
+  }
+};
 
 const putLike = async (req, res) => {};
 
