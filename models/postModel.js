@@ -1,5 +1,17 @@
 const mongoose = require('mongoose');
 
+const commentSchema = mongoose.Schema({
+  text: {
+    type: String,
+    max: 100,
+    required: true,
+  },
+  userId: {
+    type: String,
+    required: true,
+  },
+}, { timestamps: true });
+
 const postSchema = mongoose.Schema({
   userId: {
     type: String,
@@ -9,7 +21,10 @@ const postSchema = mongoose.Schema({
     type: String,
     max: 1024,
   },
-  images: {
+  comment: {
+    type: commentSchema,
+  },
+  image: {
     type: String,
   },
   likes: {
