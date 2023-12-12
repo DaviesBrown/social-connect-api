@@ -1,3 +1,4 @@
+/* eslint-disable class-methods-use-this */
 const mongoose = require('mongoose');
 
 const host = process.env.HOST || 'localhost';
