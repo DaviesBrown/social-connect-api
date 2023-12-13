@@ -11,6 +11,6 @@ router.get('/:id', authenticateToken, postController.getPost);
 router.put('/:id', authenticateToken, postController.updatePost);
 router.delete('/:id', authenticateToken, postController.deletePost);
 router.put('/:id/like', authenticateToken, postController.putLike);
-router.put('/:id/unlike', authenticateToken, postController.putUnlike);
+router.put('/:id/timeline/all', authenticateToken, postController.getTimeline);
 
 module.exports = router;
