@@ -48,7 +48,7 @@ const deletePost = async (req, res) => {
       res.status(403).json({ message: 'You can delete only your post' });
     }
   } catch (err) {
-    res.status(500).json({ error: 'This post has been deleted'});
+    res.status(500).json({ error: 'This post has been deleted' });
   }
 };
 
