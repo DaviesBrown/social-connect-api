@@ -43,7 +43,7 @@ const loginUser = async (req, res) => {
       return res.status(401).json({ error: 'Invalid password credentials' });
     }
     if (!req.user) {
-      const token = jwt.sign({ userId: user._id, isAdmin }, process.env.SECRET_KEY, { expiresIn: '24h' });
+      const token = jwt.sign({ userId: user._id, isAdmin }, process.env.SECRET_KEY, { expiresIn: '15min' });
       return res.json({ token });
     }
   } catch (error) {
