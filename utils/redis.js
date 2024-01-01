@@ -4,11 +4,7 @@ const { promisify } = require('util');
 class RedisClient {
   constructor() {
     this.store = createClient({
-      password: process.env.REDIS_PASSWORD,
-      socket: {
-        host: process.env.REDIS_HOST,
-        port: 18133,
-      },
+      url: process.env.REDIS_URL,
     });
     this.store.on('error', (err) => {
       console.log(`Redis Error: ${err}`);
