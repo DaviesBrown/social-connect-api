@@ -1,21 +1,32 @@
-const Post = require('../models/postModel');
 const User = require('../models/userModel');
+const { Post, Comment } = require('../models/postModel');
 
 const createPost = async (req, res) => {
   // POST /posts
-  const newPost = Post(req.body);
+  const newPost = Post({ userId: req.user.userId, content: req.body.content, ...req.body });
   try {
     const savedPost = await newPost.save();
-    res.status(200).json(savedPost);
+    res.status(201).json(savedPost);
   } catch (error) {
     res.status(500).json({ error });
+  }
+};
+
+const getUserPost = async (req, res) => {
+  // GET /posts/me
+  try {
+    const currentUser = await User.findById(req.user.userId);
+    const userPosts = await Post.find({ userId: currentUser._id });
+    res.status(200).json(userPosts);
+  } catch (error) {
+    res.status(500).json({ error: 'Post not found' });
   }
 };
 
 const getPost = async (req, res) => {
   // GET /posts/:id
   try {
-    const post = await Post.findById(req.params.id);
+    const post = await Post.findById(req.params.id).populate('comments');
     res.status(200).json(post);
   } catch (error) {
     res.status(500).json({ error: 'Post not found' });
@@ -68,6 +79,25 @@ const putLike = async (req, res) => {
   }
 };
 
+const postComment = async (req, res) => {
+  try {
+    const { userId } = req.user;
+    const postId = req.params.id;
+    const { text } = req.body;
+    const post = await Post.findById(postId);
+    const newComment = await Comment.create({
+      text,
+      userId,
+      post: postId,
+    });
+    post.comments.push(newComment);
+    post.save();
+    res.status(201).json(newComment);
+  } catch (error) {
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
 const getTimeline = async (req, res) => {
   // GET /posts/timeline/all
   try {
@@ -83,5 +113,5 @@ const getTimeline = async (req, res) => {
 };
 
 module.exports = {
-  createPost, getPost, updatePost, deletePost, putLike, getTimeline,
+  createPost, getUserPost, getPost, updatePost, deletePost, putLike, postComment, getTimeline,
 };
