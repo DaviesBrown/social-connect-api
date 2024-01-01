@@ -10,6 +10,10 @@ const commentSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  post: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Post',
+  },
 }, { timestamps: true });
 
 const postSchema = new mongoose.Schema({
@@ -20,10 +24,12 @@ const postSchema = new mongoose.Schema({
   content: {
     type: String,
     max: 1024,
+    required: true,
   },
-  comment: {
-    type: commentSchema,
-  },
+  comments: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Comment',
+  }],
   image: {
     type: String,
   },
@@ -31,13 +37,9 @@ const postSchema = new mongoose.Schema({
     type: Array,
     default: [],
   },
-  user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true,
-  },
 }, { timestamps: true });
 
+const Comment = mongoose.model('Comment', commentSchema);
 const Post = mongoose.model('Post', postSchema);
 
-module.exports = Post;
+module.exports = { Post, Comment };
